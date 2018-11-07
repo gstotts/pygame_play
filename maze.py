@@ -13,7 +13,7 @@ COURSE = [[1, 1, 0, 0, 0, 1, 1, 1, 0, 0],
           [1, 1, 1, 1, 1, 0, 0, 0, 1, 0],
           [1, 0, 0, 1, 0, 0, 0, 0, 1, 1]]
 
-# Colors
+# Color Constants
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 RED = (255, 0, 0)
@@ -57,6 +57,12 @@ class Maze:
         pygame.draw.circle(self.screen, RED, (self.x, self.y), 10)
         pygame.display.update()
 
+    def update_you(self):
+        self.draw_course()
+        pygame.draw.circle(self.screen, RED, (self.x, self.y), 10)
+        pygame.display.update()
+
+
     def run(self):
         self.draw_course()
         self.draw_you()
@@ -73,32 +79,27 @@ class Maze:
                             self.x += int(self.width / len(COURSE[0]))
                             if self.box_column != len(COURSE):
                                 self.box_column += 1
-                            self.draw_course()
-                            pygame.draw.circle(self.screen, RED, (self.x, self.y), 10)
+                            self.update_you()
                         elif event.key == pygame.K_LEFT and self.x != int(self.height / 20) and COURSE[self.box_row][
                             self.box_column - 1] != 0:
                             self.x -= int(self.width / len(COURSE[0]))
                             if self.box_column != 0:
                                 self.box_column -= 1
-                            self.draw_course()
-                            pygame.draw.circle(self.screen, RED, (self.x, self.y), 10)
+                            self.update_you()
                         elif event.key == pygame.K_UP and self.y != int(self.height / 20) and COURSE[self.box_row - 1][
                             self.box_column] != 0:
                             self.y -= int(self.height / len(COURSE[0]))
                             if self.box_row != 0:
                                 self.box_row -= 1
-                            self.draw_course()
-                            pygame.draw.circle(self.screen, RED, (self.x, self.y), 10)
+                            self.update_you()
                         elif event.key == pygame.K_DOWN and self.y != int(self.height / 20) * len(COURSE[0]) and \
                                 COURSE[self.box_row + 1][self.box_column] != 0:
                             self.y += int(self.height / len(COURSE[0]))
                             if self.box_row != len(COURSE[0]):
                                 self.box_row += 1
-                            self.draw_course()
-                            pygame.draw.circle(self.screen, RED, (self.x, self.y), 10)
+                            self.update_you()
                     except IndexError:
                         pass
-            pygame.display.update()
 
         pygame.quit()
 
