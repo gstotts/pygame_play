@@ -3,6 +3,7 @@
 
 import pygame
 
+
 class App(object):
     def __init__(self, width=640, height=400, fps=30):
         pygame.init()
@@ -28,17 +29,18 @@ class App(object):
 
             ms = self.clock.tick(self.fps)
             self.playtime += ms / 1000.0
-            self.draw_text("FPS:  {:6.3}{}PLAYTIME:  {:6.3} SECONDS".format(self.clock.get_fps(), " "*5, self.playtime))
+            self.draw_text(
+                "FPS:  {:6.3}{}PLAYTIME:  {:6.3} SECONDS".format(self.clock.get_fps(), " " * 5, self.playtime))
             pygame.display.flip()
-            self.screen.blit(self.bg, (0,0))
+            self.screen.blit(self.bg, (0, 0))
 
         pygame.quit()
 
     def draw_text(self, text):
         fw, fh = self.font.size(text)
-        surface = self.font.render(text, True, (0,255,0))
+        surface = self.font.render(text, True, (0, 255, 0))
         self.screen.blit(surface, ((self.width - fw) // 2, (self.height - fh) // 2))
 
 
 if __name__ == '__main__':
-    App(640,400).run()
+    App(640, 400).run()

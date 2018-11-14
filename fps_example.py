@@ -2,11 +2,11 @@ import pygame
 
 pygame.init()
 
-screen = pygame.display.set_mode((640,480))
+screen = pygame.display.set_mode((640, 480))
 background = pygame.Surface(screen.get_size())
-background.fill((255,255,255))
+background.fill((255, 255, 255))
 background = background.convert()
-screen.blit(background, (0,0))
+screen.blit(background, (0, 0))
 clock = pygame.time.Clock()
 
 mainloop = True
@@ -27,7 +27,6 @@ while mainloop:
 
     text = "FPS {0:.2f}   Playtime {1:.2f}".format(clock.get_fps(), playtime)
     pygame.display.set_caption(text)
-    pygame.display.flip()\
-
-pygame.quit()
-
+    pygame.display.flip() \
+ \
+            pygame.quit()

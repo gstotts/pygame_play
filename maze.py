@@ -15,7 +15,6 @@ COURSE = [[1, 1, 0, 0, 0, 1, 1, 1, 0, 0],
           [1, 0, 0, 1, 0, 0, 0, 0, 1, 1]]
 
 
-
 class Maze:
     def __init__(self, width=300, height=300, fps=30):
         pygame.init()
@@ -59,7 +58,6 @@ class Maze:
         pygame.draw.circle(self.screen, colors.RED, (self.x, self.y), 10)
         pygame.display.update()
 
-
     def run(self):
         self.draw_course()
         self.draw_you()
@@ -77,14 +75,14 @@ class Maze:
                             if self.box_column != len(COURSE):
                                 self.box_column += 1
                             self.update_you()
-                        elif event.key == pygame.K_LEFT and self.x != int(self.height / 20) and COURSE[self.box_row][
-                            self.box_column - 1] != 0:
+                        elif event.key == pygame.K_LEFT and self.x != int(self.height / 20) and \
+                                COURSE[self.box_row][self.box_column - 1] != 0:
                             self.x -= int(self.width / len(COURSE[0]))
                             if self.box_column != 0:
                                 self.box_column -= 1
                             self.update_you()
-                        elif event.key == pygame.K_UP and self.y != int(self.height / 20) and COURSE[self.box_row - 1][
-                            self.box_column] != 0:
+                        elif event.key == pygame.K_UP and self.y != int(self.height / 20) and \
+                                COURSE[self.box_row - 1][self.box_column] != 0:
                             self.y -= int(self.height / len(COURSE[0]))
                             if self.box_row != 0:
                                 self.box_row -= 1
