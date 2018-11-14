@@ -27,6 +27,6 @@ while mainloop:
 
     text = "FPS {0:.2f}   Playtime {1:.2f}".format(clock.get_fps(), playtime)
     pygame.display.set_caption(text)
-    pygame.display.flip() \
- \
-            pygame.quit()
+    pygame.display.flip()
+
+pygame.quit()
