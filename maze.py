@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import pygame
+from core import colors
 
 COURSE = [[1, 1, 0, 0, 0, 1, 1, 1, 0, 0],
           [0, 1, 1, 1, 1, 1, 0, 1, 1, 0],
@@ -13,10 +14,6 @@ COURSE = [[1, 1, 0, 0, 0, 1, 1, 1, 0, 0],
           [1, 1, 1, 1, 1, 0, 0, 0, 1, 0],
           [1, 0, 0, 1, 0, 0, 0, 0, 1, 1]]
 
-# Color Constants
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-RED = (255, 0, 0)
 
 
 class Maze:
@@ -37,7 +34,7 @@ class Maze:
         self.box_column = 0
 
     def draw_course(self):
-        self.screen.fill(WHITE)
+        self.screen.fill(colors.WHITE)
         line_height = self.height / len(COURSE)
         line_width = self.width / len(COURSE[0])
         cell_x, cell_y = (0, 0)
@@ -45,7 +42,7 @@ class Maze:
         for line in COURSE:
             for cell in line:
                 if cell == 0:
-                    pygame.draw.rect(self.screen, BLACK, (cell_x, cell_y, line_width, line_height))
+                    pygame.draw.rect(self.screen, colors.BLACK, (cell_x, cell_y, line_width, line_height))
                 cell_x = cell_x + line_width
 
             cell_x = 0
@@ -54,12 +51,12 @@ class Maze:
         pygame.display.update()
 
     def draw_you(self):
-        pygame.draw.circle(self.screen, RED, (self.x, self.y), 10)
+        pygame.draw.circle(self.screen, colors.RED, (self.x, self.y), 10)
         pygame.display.update()
 
     def update_you(self):
         self.draw_course()
-        pygame.draw.circle(self.screen, RED, (self.x, self.y), 10)
+        pygame.draw.circle(self.screen, colors.RED, (self.x, self.y), 10)
         pygame.display.update()
 
 
