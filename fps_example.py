@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import pygame
 
 pygame.init()
@@ -5,6 +7,7 @@ pygame.init()
 screen = pygame.display.set_mode((640, 480))
 background = pygame.Surface(screen.get_size())
 background.fill((255, 255, 255))
+# noinspection PyArgumentList,PyArgumentList
 background = background.convert()
 screen.blit(background, (0, 0))
 clock = pygame.time.Clock()
