@@ -1,4 +1,8 @@
 #!/usr/bin/env python3
+"""
+Basic Maze -- move the ball through.  No defined start or end, simply for playing
+with layout and testing of movement through a defined space.
+"""
 
 import pygame
 from core import colors
