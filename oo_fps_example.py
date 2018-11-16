@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
-
+"""
+Example Object Oriented Game Displaying Frames Per Second
+"""
 
 import pygame
 
