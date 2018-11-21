@@ -104,4 +104,4 @@ class Maze:
 
 
 if __name__ == '__main__':
-    Maze(300, 300).run()
+    Maze(500, 500).run()
