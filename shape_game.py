@@ -1,16 +1,21 @@
 #!/usr/bin/env python3
 
-import random, pygame, sys
+import pygame
+import random
+
 from core import colors
 
 FPS = 30
 WINDOW_WIDTH = 640
 WINDOW_HEIGHT = 640
+# noinspection SpellCheckingInspection
 BOXSIZE = 20
+# noinspection SpellCheckingInspection
 GAPSIZE = 10
-BOARD_WIDTH = int((WINDOW_WIDTH - GAPSIZE)/(BOXSIZE + GAPSIZE))
-BOARD_HEIGHT = int((WINDOW_HEIGHT - GAPSIZE)/(BOXSIZE + GAPSIZE))
+BOARD_WIDTH = int((WINDOW_WIDTH - GAPSIZE) / (BOXSIZE + GAPSIZE))
+BOARD_HEIGHT = int((WINDOW_HEIGHT - GAPSIZE) / (BOXSIZE + GAPSIZE))
 
+# noinspection SpellCheckingInspection
 BGCOLOR = colors.GRAY
 
 # Shapes
@@ -24,6 +29,7 @@ ALL_SHAPES = [SQUARE, DIAMOND, CIRCLE, TRIANGLE]
 
 class ShapeGame:
     def __init__(self):
+        """Initializes the game and sets basic settings."""
         pygame.init()
         pygame.display.set_caption('Shape Game v1.0', '')
         self.running = True
@@ -31,9 +37,10 @@ class ShapeGame:
         self.width = WINDOW_WIDTH
         self.height = WINDOW_HEIGHT
         self.screen = pygame.display.set_mode((self.width, self.height), pygame.DOUBLEBUF)
-        self.bg = pygame.Surface(self.screen.get_size()).convert()
 
-    def set_random_board(self):
+    @staticmethod
+    def set_random_board():
+        """Returns a randomly arranged board based on shapes listed in the ALL_SHAPES constant."""
         board = []
         for x in range(BOARD_HEIGHT):
             column = []
@@ -43,6 +50,7 @@ class ShapeGame:
         return board
 
     def draw_board(self, board):
+        """Accepts a 2-d list and returns the graphical representation of the board."""
         y = GAPSIZE
         self.screen.fill(BGCOLOR)
         for row in board:
@@ -51,38 +59,39 @@ class ShapeGame:
                 if item == SQUARE:
                     pygame.draw.rect(self.screen, colors.GREEN, (x, y, BOXSIZE, BOXSIZE))
                 elif item == DIAMOND:
-                    pygame.draw.polygon(self.screen, colors.BLUE, ((x + int(BOXSIZE * .5), y), \
-                                                                   (x + BOXSIZE, y + int(BOXSIZE * .5)), \
-                                                                   (x + int(BOXSIZE * .5), y + BOXSIZE), \
+                    pygame.draw.polygon(self.screen, colors.BLUE, ((x + int(BOXSIZE * .5), y),
+                                                                   (x + BOXSIZE, y + int(BOXSIZE * .5)),
+                                                                   (x + int(BOXSIZE * .5), y + BOXSIZE),
                                                                    (x, y + int(BOXSIZE * .5))))
                 elif item == CIRCLE:
-                    pygame.draw.circle(self.screen, colors.RED, (x + int(BOXSIZE / 2), \
-                                                                 y + int(BOXSIZE / 2)), int(BOXSIZE / 2))
+                    pygame.draw.circle(self.screen, colors.RED, (x + int(BOXSIZE / 2), y + int(BOXSIZE / 2)),
+                                       int(BOXSIZE / 2))
                 else:
-                    pygame.draw.polygon(self.screen, colors.YELLOW, ((x + int(BOXSIZE * .5), y), \
-                                                                     (x + BOXSIZE, y + BOXSIZE), \
-                                                                     (x, y + BOXSIZE)))
+                    pygame.draw.polygon(self.screen, colors.YELLOW, ((x + int(BOXSIZE * .5), y),
+                                                                     (x + BOXSIZE, y + BOXSIZE), (x, y + BOXSIZE)))
                 x += (BOXSIZE + GAPSIZE)
             y += (BOXSIZE + GAPSIZE)
 
         pygame.display.update()
 
-    def get_box_top_coords(self, box_x, box_y):
-        x = box_x * (BOXSIZE + GAPSIZE)
-        y = box_y * (BOXSIZE + GAPSIZE)
-
-    def get_box_from_position(self, x, y):
+    @staticmethod
+    def get_box_from_position(x, y):
+        """Accepts x and y coordinates of mouse click and returns the x and y position on the board."""
         for box_x in range(BOARD_WIDTH):
             for box_y in range(BOARD_HEIGHT):
-                box = pygame.Rect(box_x * (BOXSIZE + GAPSIZE) + GAPSIZE, box_y * (BOXSIZE + GAPSIZE) + GAPSIZE , BOXSIZE, BOXSIZE)
+                box = pygame.Rect(box_x * (BOXSIZE + GAPSIZE) + GAPSIZE, box_y * (BOXSIZE + GAPSIZE) + GAPSIZE, BOXSIZE,
+                                  BOXSIZE)
                 if box.collidepoint(x, y):
-                    return (box_x, box_y)
-        return(None, None)
+                    return box_x, box_y
+        return None, None
 
-    def get_group_touching(self, position, shape, board):
+    @staticmethod
+    def get_group_touching(position, shape, board):
+        """Accepts a position on the board as a list, a shape clicked, and the board in use and returns the positions
+        of all shapes touching that series."""
         queue = [position]
         same_shape_and_touching = []
-        while queue != []:
+        while queue:
             (x, y) = queue.pop()
             same_shape_and_touching.append((x, y))
             if BOARD_WIDTH > x + 1:
@@ -103,17 +112,14 @@ class ShapeGame:
         else:
             return None
 
-
-
-
-
-
+    def remove_shapes(self, shapes_to_remove):
+        for (x, y) in shapes_to_remove:
+            pass
 
     def run(self):
-        x, y = (0, 0)
+        """Runs the basic while loop for game play and handles events."""
         board = self.set_random_board()
         self.draw_board(board)
-        print(board)
         while self.running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -125,11 +131,10 @@ class ShapeGame:
                         (box_x, box_y) = self.get_box_from_position(x, y)
                         if (box_x, box_y) != (None, None):
                             shape = board[box_x][box_y]
+                            # noinspection SpellCheckingInspection
                             coords_to_remove = self.get_group_touching((box_x, box_y), shape, board)
-                            if coords_to_remove == None:
-                                pass
-                            else:
-                                print(coords_to_remove)
+                            if coords_to_remove is not None:
+                                self.remove_shapes(coords_to_remove)
 
 
 if __name__ == '__main__':
