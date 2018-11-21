@@ -27,7 +27,6 @@ class Maze:
         self.height = height
         self.fps = fps
         self.screen = pygame.display.set_mode((self.width, self.height), pygame.DOUBLEBUF)
-        self.background = pygame.Surface(self.screen.get_size()).convert()
         self.clock = pygame.time.Clock()
         self.running = True
         self.time_played = 0.0
