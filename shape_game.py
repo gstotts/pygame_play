@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
 import numpy
 import pygame
-import random
 
 from core import colors
 
-FPS = 30
 SCORE_TRACKER_HEIGHT = 20
 WINDOW_WIDTH = 640
 WINDOW_HEIGHT = 480 + SCORE_TRACKER_HEIGHT
@@ -32,7 +30,6 @@ class ShapeGame:
         pygame.init()
         pygame.display.set_caption('Shape Game v1.0', '')
         self.running = True
-        self.fps = FPS
         self.width = WINDOW_WIDTH
         self.height = WINDOW_HEIGHT
         self.screen = pygame.display.set_mode((self.width, self.height), pygame.DOUBLEBUF)
