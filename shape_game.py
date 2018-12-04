@@ -60,7 +60,7 @@ class ShapeGame:
                     pygame.draw.polygon(self.screen, colors.YELLOW, ((x + int(BOXSIZE * .5), y),
                                                                      (x + BOXSIZE, y + BOXSIZE), (x, y + BOXSIZE)))
                 else:
-                    pass  #Skip EMPTY spaces
+                    pass  # Skip EMPTY spaces
 
                 x += (BOXSIZE + GAPSIZE)
             y += (BOXSIZE + GAPSIZE)
@@ -123,7 +123,6 @@ class ShapeGame:
             col_val += 1
         self.draw_board(board)
 
-
     def run(self):
         """Runs the basic while loop for game play and handles events."""
         board = self.set_random_board()
@@ -141,7 +140,7 @@ class ShapeGame:
                         if (box_x, box_y) != (None, None):
                             shape = board[box_x][box_y]
                             coords_to_remove = self.get_group_touching((box_x, box_y), shape, board)
-                            if coords_to_remove != None:
+                            if coords_to_remove is not None:
                                 if len(coords_to_remove) >= 3:
                                     self.remove_shapes(coords_to_remove, board)
 
