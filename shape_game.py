@@ -39,13 +39,7 @@ class ShapeGame:
     @staticmethod
     def set_random_board():
         """Returns a randomly arranged board based on shapes listed in the ALL_SHAPES constant."""
-        board = []
-        for x in range(BOARD_HEIGHT):
-            column = []
-            for y in range(BOARD_WIDTH):
-                column.append(random.choice(ALL_SHAPES))
-            board.append(column)
-        return numpy.array(board)
+        return numpy.random.randint(len(ALL_SHAPES), size=(BOARD_HEIGHT, BOARD_WIDTH))
 
     def draw_board(self, board):
         """Accepts a 2-d list and returns the graphical representation of the board."""
