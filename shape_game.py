@@ -6,12 +6,13 @@ import random
 from core import colors
 
 FPS = 30
+SCORE_TRACKER_HEIGHT = 20
 WINDOW_WIDTH = 640
-WINDOW_HEIGHT = 640
+WINDOW_HEIGHT = 480 + SCORE_TRACKER_HEIGHT
 BOXSIZE = 20
 GAPSIZE = 10
 BOARD_WIDTH = int((WINDOW_WIDTH - GAPSIZE) / (BOXSIZE + GAPSIZE))
-BOARD_HEIGHT = int((WINDOW_HEIGHT - GAPSIZE) / (BOXSIZE + GAPSIZE))
+BOARD_HEIGHT = int((WINDOW_HEIGHT - GAPSIZE - SCORE_TRACKER_HEIGHT) / (BOXSIZE + GAPSIZE))
 
 BGCOLOR = colors.GRAY
 
@@ -143,8 +144,9 @@ class ShapeGame:
                         if (box_x, box_y) != (None, None):
                             shape = board[box_x][box_y]
                             coords_to_remove = self.get_group_touching((box_x, box_y), shape, board)
-                            if len(coords_to_remove) >= 3:
-                                self.remove_shapes(coords_to_remove, board)
+                            if coords_to_remove != None:
+                                if len(coords_to_remove) >= 3:
+                                    self.remove_shapes(coords_to_remove, board)
 
 
 if __name__ == '__main__':
