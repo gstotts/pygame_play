@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-
+import numpy
 import pygame
 import random
 
@@ -8,14 +8,11 @@ from core import colors
 FPS = 30
 WINDOW_WIDTH = 640
 WINDOW_HEIGHT = 640
-# noinspection SpellCheckingInspection
 BOXSIZE = 20
-# noinspection SpellCheckingInspection
 GAPSIZE = 10
 BOARD_WIDTH = int((WINDOW_WIDTH - GAPSIZE) / (BOXSIZE + GAPSIZE))
 BOARD_HEIGHT = int((WINDOW_HEIGHT - GAPSIZE) / (BOXSIZE + GAPSIZE))
 
-# noinspection SpellCheckingInspection
 BGCOLOR = colors.GRAY
 
 # Shapes
@@ -23,6 +20,7 @@ SQUARE = 0
 DIAMOND = 1
 CIRCLE = 2
 TRIANGLE = 3
+EMPTY = 4
 
 ALL_SHAPES = [SQUARE, DIAMOND, CIRCLE, TRIANGLE]
 
@@ -47,7 +45,7 @@ class ShapeGame:
             for y in range(BOARD_WIDTH):
                 column.append(random.choice(ALL_SHAPES))
             board.append(column)
-        return board
+        return numpy.array(board)
 
     def draw_board(self, board):
         """Accepts a 2-d list and returns the graphical representation of the board."""
@@ -66,9 +64,12 @@ class ShapeGame:
                 elif item == CIRCLE:
                     pygame.draw.circle(self.screen, colors.RED, (x + int(BOXSIZE / 2), y + int(BOXSIZE / 2)),
                                        int(BOXSIZE / 2))
-                else:
+                elif item == TRIANGLE:
                     pygame.draw.polygon(self.screen, colors.YELLOW, ((x + int(BOXSIZE * .5), y),
                                                                      (x + BOXSIZE, y + BOXSIZE), (x, y + BOXSIZE)))
+                else:
+                    pass  #Skip EMPTY spaces
+
                 x += (BOXSIZE + GAPSIZE)
             y += (BOXSIZE + GAPSIZE)
 
@@ -112,9 +113,24 @@ class ShapeGame:
         else:
             return None
 
-    def remove_shapes(self, shapes_to_remove):
+    def remove_shapes(self, shapes_to_remove, board):
+        """Removes shapes that were touching after click, shift items down, and then redraws board."""
+        # Replace shapes at (x,y) coordinates with emtpy spots
         for (x, y) in shapes_to_remove:
-            pass
+            board[x][y] = EMPTY
+
+        # Shift shapes down if needed
+        col_val = 0
+        for column in numpy.transpose(board):
+
+            if EMPTY in column:
+                stripped_column = list(filter(lambda a: a != EMPTY, column))
+                while len(stripped_column) != BOARD_HEIGHT:
+                    stripped_column.insert(0, EMPTY)
+                board[:, col_val] = stripped_column
+            col_val += 1
+        self.draw_board(board)
+
 
     def run(self):
         """Runs the basic while loop for game play and handles events."""
@@ -122,6 +138,7 @@ class ShapeGame:
         self.draw_board(board)
         while self.running:
             for event in pygame.event.get():
+                # If a user wants to quit, do so gracefully.
                 if event.type == pygame.QUIT:
                     self.running = False
                     pygame.quit()
@@ -131,10 +148,9 @@ class ShapeGame:
                         (box_x, box_y) = self.get_box_from_position(x, y)
                         if (box_x, box_y) != (None, None):
                             shape = board[box_x][box_y]
-                            # noinspection SpellCheckingInspection
                             coords_to_remove = self.get_group_touching((box_x, box_y), shape, board)
-                            if coords_to_remove is not None:
-                                self.remove_shapes(coords_to_remove)
+                            if len(coords_to_remove) >= 3:
+                                self.remove_shapes(coords_to_remove, board)
 
 
 if __name__ == '__main__':
