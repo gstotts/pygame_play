@@ -33,6 +33,8 @@ class ShapeGame:
         self.width = WINDOW_WIDTH
         self.height = WINDOW_HEIGHT
         self.screen = pygame.display.set_mode((self.width, self.height), pygame.DOUBLEBUF)
+        self.score = 0
+        self.font = pygame.font.SysFont('mono', 20, bold=True)
 
     @staticmethod
     def set_random_board():
@@ -65,6 +67,8 @@ class ShapeGame:
                 x += (BOXSIZE + GAPSIZE)
             y += (BOXSIZE + GAPSIZE)
 
+        surface = self.font.render("Score: {}".format(self.score), True, colors.BLACK)
+        self.screen.blit(surface, (0, WINDOW_HEIGHT - SCORE_TRACKER_HEIGHT))
         pygame.display.update()
 
     @staticmethod
@@ -87,7 +91,7 @@ class ShapeGame:
         while queue:
             (x, y) = queue.pop()
             same_shape_and_touching.append((x, y))
-            if BOARD_WIDTH > x + 1:
+            if BOARD_WIDTH >= x + 1:
                 if (board[x + 1][y] == shape) and ((x + 1, y) not in same_shape_and_touching):
                     queue.append((x + 1, y))
             if x - 1 >= 0:
@@ -96,7 +100,7 @@ class ShapeGame:
             if y - 1 >= 0:
                 if (board[x][y - 1] == shape) and ((x, y - 1) not in same_shape_and_touching):
                     queue.append((x, y - 1))
-            if BOARD_HEIGHT > y + 1:
+            if BOARD_HEIGHT >= y + 1:
                 if (board[x][y + 1] == shape) and ((x, y + 1) not in same_shape_and_touching):
                     queue.append((x, y + 1))
 
@@ -121,6 +125,7 @@ class ShapeGame:
                     stripped_column.insert(0, EMPTY)
                 board[:, col_val] = stripped_column
             col_val += 1
+        self.score += int(25/4 * len(shapes_to_remove))
         self.draw_board(board)
 
     def run(self):
@@ -143,6 +148,7 @@ class ShapeGame:
                             if coords_to_remove is not None:
                                 if len(coords_to_remove) >= 3:
                                     self.remove_shapes(coords_to_remove, board)
+
 
 
 if __name__ == '__main__':
